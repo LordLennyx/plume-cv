@@ -1,0 +1,24 @@
+{
+ "titre": "<em>Plume</em>, créateur de CV",
+ "type": "Générateur de CV en ligne",
+ "sous_titre": "Éditeur guidé, aperçu A4 en direct, trois modèles, score ATS, export PDF",
+ "couleur": "#262420",
+ "graine": 27,
+ "voix": [
+  [3.3, "Plume, un créateur de CV en ligne,"],
+  [7.6, "on remplit son parcours, l'aperçu se met en page tout seul, au format A4,"],
+  [15.4, "trois modèles, six couleurs, un score de lisibilité pour les recruteurs, et le PDF en un clic."]
+ ],
+ "etapes": [
+  {"t": "wait", "ms": 900},
+  {"t": "eval", "js": "const i=document.querySelector('[data-k=role]');i.value='';i.focus()", "pause": 200},
+  {"t": "type", "sel": "[data-k=role]", "text": "Lead développeuse JavaScript", "delay": 45, "pause": 700},
+  {"t": "click", "sel": "[data-tpl=band]", "pause": 1500},
+  {"t": "click", "sel": "[data-col='#1f4e79']", "pause": 1300},
+  {"t": "click", "sel": "[data-tpl=mini]", "pause": 1400},
+  {"t": "click", "sel": "[data-col='#2f6d4f']", "pause": 1100},
+  {"t": "click", "sel": "[data-tpl=edito]", "pause": 1300},
+  {"t": "click", "sel": "[data-col='#b4452a']", "pause": 800},
+  {"t": "eval", "js": "document.querySelector('#eb').scrollTo({top:2000,behavior:'smooth'})", "pause": 2200}
+ ]
+}

@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Plume — créateur de CV</title>
+<meta name="description" content="Plume, créateur de CV en ligne : éditeur guidé, aperçu A4 en direct, trois modèles, couleur d'accent, analyse de lisibilité par les logiciels de recrutement et export PDF.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23262420'/%3E%3Cpath d='M22 6c-8 2-12 9-13 20 4-6 8-9 13-10-3 0-5-1-6-2 4-1 6-4 6-8z' fill='%23f4efe6'/%3E%3C/svg%3E">
+<style>
+:root{--bg:#ebe7df;--paper:#fbf9f5;--ink:#262420;--mute:#7a756b;--line:#dcd6ca;--acc:#b4452a}
+*{box-sizing:border-box;margin:0}
+body{background:var(--bg);color:var(--ink);font:400 14px/1.45 'DM Sans',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+button,input,textarea,select{font:inherit;color:inherit}button{cursor:pointer}
+.app{display:grid;grid-template-columns:440px 1fr;height:100vh}
+.ed{background:var(--paper);border-right:1px solid var(--line);display:flex;flex-direction:column;min-height:0}
+.eh{padding:16px 20px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:10px}
+.logo{font:400 26px 'DM Serif Display'}
+.logo i{font-style:italic;color:var(--acc)}
+.eh .sp{margin-left:auto;display:flex;gap:6px}
+.btn{border:1px solid var(--line);background:#fff;border-radius:9px;padding:8px 12px;font-weight:600;font-size:13px}
+.btn.p{background:var(--ink);color:#fff;border-color:var(--ink)}
+.eb{overflow-y:auto;padding:6px 20px 30px;flex:1}
+details{border-bottom:1px solid var(--line);padding:4px 0}
+summary{list-style:none;cursor:pointer;display:flex;align-items:center;padding:12px 0;font-weight:700;font-size:15px}
+summary::-webkit-details-marker{display:none}
+summary::after{margin-left:auto;content:"+";font-weight:400;font-size:20px;color:var(--mute);transition:transform .2s}
+details[open] summary::after{transform:rotate(45deg)}
+summary small{font-weight:500;color:var(--mute);font-size:12px;margin-left:8px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+label.f{display:grid;gap:3px;font-size:12px;color:var(--mute);margin-bottom:8px}
+.f input,.f textarea,.f select{border:1px solid var(--line);border-radius:8px;padding:8px 10px;background:#fff;color:var(--ink);font-size:13.5px}
+.f textarea{resize:vertical;min-height:70px;line-height:1.45}
+.it{background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 10px 2px;margin-bottom:8px;position:relative}
+.it .x{position:absolute;right:6px;top:4px;border:0;background:none;color:var(--mute);font-size:18px}
+.add{width:100%;border:1.5px dashed var(--line);background:none;border-radius:9px;padding:9px;color:var(--mute);font-weight:600;margin:2px 0 10px}
+.add:hover{border-color:var(--ink);color:var(--ink)}
+.sk{display:grid;grid-template-columns:1fr 110px 24px;gap:8px;align-items:center;margin-bottom:6px}
+.sk input[type=text]{border:1px solid var(--line);border-radius:7px;padding:6px 9px;background:#fff}
+.sk input[type=range]{accent-color:var(--ink)}
+.sk button{border:0;background:none;color:var(--mute);font-size:17px}
+.tpl{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:10px}
+.tpl button{border:2px solid var(--line);background:#fff;border-radius:10px;padding:6px;font-size:12px;font-weight:600}
+.tpl button.on{border-color:var(--ink)}
+.tpl svg{width:100%;height:auto;display:block;margin-bottom:4px}
+.sw{display:flex;gap:8px;margin-bottom:12px}
+.sw button{width:28px;height:28px;border-radius:50%;border:3px solid #fff;box-shadow:0 0 0 1px var(--line)}
+.sw button.on{box-shadow:0 0 0 2px var(--ink)}
+.ats{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px;margin:14px 0 4px}
+.ats .t{display:flex;align-items:center;gap:12px}
+.ats .n{font:400 34px 'DM Serif Display'}
+.ats ul{list-style:none;padding:0;margin-top:8px;font-size:12.5px}
+.ats li{padding:3px 0 3px 20px;position:relative}
+.ats li::before{content:"";position:absolute;left:2px;top:8px;width:9px;height:9px;border-radius:50%}
+.ats li.ok::before{background:#3f8f4f}.ats li.ko::before{background:#d9902a}
+/* aperçu */
+.pv{overflow:auto;padding:30px;display:flex;justify-content:center;align-items:flex-start}
+.zoom{transform-origin:top center}
+.page{width:794px;min-height:1123px;background:#fff;box-shadow:0 20px 50px -25px rgba(38,36,32,.45);position:relative;color:#1e1d1a;font-size:12.6px;line-height:1.5}
+.page h1,.page h2{font-weight:400}
+.pulse{animation:pl .6s}
+@keyframes pl{from{background:color-mix(in srgb,var(--a) 22%,transparent)}}
+/* modèle éditorial */
+.t-edito{padding:56px 60px}
+.t-edito .hd{display:grid;grid-template-columns:1fr auto;gap:20px;align-items:end;border-bottom:1.5px solid #1e1d1a;padding-bottom:20px}
+.t-edito h1{font:400 52px/1 'DM Serif Display';letter-spacing:-.01em}
+.t-edito h1 em{color:var(--a)}
+.t-edito .role{font-size:15px;margin-top:8px;color:var(--a);font-weight:600;letter-spacing:.02em}
+.t-edito .ct{text-align:right;font-size:11.5px;line-height:1.6;color:#55524a}
+.t-edito .grid{display:grid;grid-template-columns:1fr 210px;gap:36px;margin-top:26px}
+.t-edito h2{font:400 21px 'DM Serif Display';margin:0 0 10px;display:flex;align-items:center;gap:10px}
+.t-edito h2::after{content:"";flex:1;height:1px;background:#d8d3c8}
+.ex{margin-bottom:16px;break-inside:avoid}
+.ex .h{display:flex;justify-content:space-between;gap:10px}
+.ex b{font-size:13.5px}.ex .d{color:#7a756b;font-size:11.5px;white-space:nowrap}
+.ex .c{color:var(--a);font-weight:600;font-size:12px}
+.ex ul{padding-left:15px;margin-top:4px}.ex li{margin-bottom:2px}
+.lv{height:4px;background:#ece8df;border-radius:2px;margin:3px 0 9px}.lv u{display:block;height:100%;background:var(--a);border-radius:2px}
+.side p{margin-bottom:6px}
+/* modèle bandeau */
+.t-band{display:grid;grid-template-columns:250px 1fr}
+.t-band .bar{background:var(--a);color:#fff;padding:46px 26px;min-height:1123px}
+.t-band .ph{width:120px;height:120px;border-radius:50%;background:#ffffff26;display:grid;place-items:center;font:400 44px 'DM Serif Display';margin-bottom:22px;border:3px solid #ffffff55}
+.t-band .bar h2{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.14em;margin:24px 0 10px;opacity:.85}
+.t-band .bar .lv{background:#ffffff33}.t-band .bar .lv u{background:#fff}
+.t-band .main{padding:46px 40px}
+.t-band h1{font:400 44px/1 'DM Serif Display'}
+.t-band .role{font-size:15px;font-weight:600;color:var(--a);margin:8px 0 18px}
+.t-band .main h2{font-size:12.5px;font-weight:700;text-transform:uppercase;letter-spacing:.14em;color:var(--a);margin:22px 0 10px;border-bottom:1px solid #e3ded4;padding-bottom:6px}
+/* modèle minimal */
+.t-mini{padding:64px 72px}
+.t-mini h1{font-size:30px;font-weight:700;letter-spacing:-.02em}
+.t-mini .role{color:#7a756b;font-size:14px;margin:2px 0 6px}
+.t-mini .ct{font-size:11.5px;color:#55524a;display:flex;gap:14px;flex-wrap:wrap;padding-bottom:18px;border-bottom:1px solid #e3ded4}
+.t-mini .sec{display:grid;grid-template-columns:130px 1fr;gap:20px;padding:16px 0;border-bottom:1px solid #f0ece4}
+.t-mini h2{font-size:11.5px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:var(--a)}
+.t-mini .chips span{display:inline-block;border:1px solid #e3ded4;border-radius:20px;padding:1px 9px;margin:0 4px 5px 0;font-size:11.5px}
+.mtab{display:none}
+@media (max-width:1000px){.app{grid-template-columns:1fr;height:auto}.ed{border-right:0}.eb{overflow:visible}.pv{padding:16px 0 40px;overflow:hidden}.mtab{display:flex;position:sticky;top:0;z-index:5;background:var(--paper);border-bottom:1px solid var(--line)}.mtab button{flex:1;border:0;background:none;padding:12px;font-weight:700;color:var(--mute)}.mtab button.on{color:var(--ink);box-shadow:inset 0 -2px var(--ink)}.app.m-pv .ed{display:none}.app:not(.m-pv) .pv{display:none}.eh .sp .hm{display:none}}
+@media print{@page{size:A4;margin:0}body{background:#fff}.ed,.mtab{display:none!important}.app{display:block;height:auto}.pv{padding:0;overflow:visible;display:block}.zoom{transform:none!important;height:auto!important}.page{box-shadow:none}}
+</style>
+</head>
+<body>
+<div class="mtab"><button class="on" data-m="ed">Modifier</button><button data-m="pv">Aperçu</button></div>
+<div class="app" id="app">
+<div class="ed">
+ <div class="eh"><div class="logo">Plu<i>me</i></div><div class="sp"><button class="btn hm" id="rst">Exemple</button><button class="btn hm" id="clr">Vider</button><button class="btn p" onclick="print()">Télécharger en PDF</button></div></div>
+ <div class="eb" id="eb"></div>
+</div>
+<div class="pv" id="pv"><div class="zoom" id="zm"><div class="page" id="page"></div></div></div>
+</div>
+<script>
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const esc=s=>String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;');
+const EX={tpl:'edito',acc:'#b4452a',prenom:'Ariane',nom:'Ebongué',role:'Développeuse full-stack JavaScript',mail:'ariane.ebongue@mail.cm',tel:'+237 6 91 22 33 44',ville:'Douala, Cameroun',lien:'github.com/arianeeb',
+ profil:"Développeuse full-stack avec quatre ans d'expérience dans la fintech et l'e-commerce. J'aime transformer des besoins métier en produits simples, rapides et fiables, utilisés chaque jour par des milliers de personnes.",
+ exp:[{p:'Développeuse full-stack',c:'Nova Pay',l:'Douala',d:'2023 – aujourd\'hui',t:"Conçu le tableau de bord marchand utilisé par 3 200 commerçants\nRéduit de 40 % le temps de chargement de l'application de paiement\nEncadré deux développeurs juniors et mis en place les revues de code"},
+  {p:'Développeuse front-end',c:'Ocre, boutique en ligne',l:'Yaoundé',d:'2021 – 2023',t:"Développé le tunnel de commande avec paiement Mobile Money\nAugmenté le taux de conversion mobile de 18 %"},
+  {p:'Stagiaire développeuse',c:'Lumo Fibre',l:'Douala',d:'2020',t:"Créé un outil interne de suivi des interventions techniques"}],
+ form:[{p:'Licence en génie logiciel',c:'Université de Douala',d:'2017 – 2020'},{p:'Baccalauréat C',c:'Lycée Joss, Douala',d:'2017'}],
+ sk:[['JavaScript, TypeScript',90],['React, Next.js',85],['Node.js, Express',80],['PostgreSQL',70],['Figma',60]],
+ lang:[['Français','langue maternelle'],['Anglais','courant (TOEIC 905)'],['Duala','notions']],
+ int:'Course à pied, mentorat de jeunes filles en code, photographie de rue'};
+let D;try{D=JSON.parse(localStorage.getItem('plume'))}catch(e){}if(!D)D=JSON.parse(JSON.stringify(EX));
+const save=()=>{try{localStorage.setItem('plume',JSON.stringify(D))}catch(e){}};
+const COLS=['#b4452a','#1f4e79','#2f6d4f','#6b3fa0','#262420','#a0731c'];
+const TPL=[['edito','Éditorial'],['band','Bandeau'],['mini','Minimal']];
+const tplSvg=k=>({edito:'<rect x="6" y="6" width="38" height="5" fill="#262420"/><rect x="6" y="14" width="20" height="2" fill="var(--acc)"/><rect x="6" y="20" width="58" height=".8" fill="#262420"/>'+[0,1,2,3,4].map(i=>`<rect x="6" y="${25+i*6}" width="36" height="2" fill="#ccc"/><rect x="48" y="${25+i*6}" width="16" height="2" fill="#ccc"/>`).join(''),
+ band:'<rect width="20" height="56" fill="var(--acc)"/><circle cx="10" cy="11" r="6" fill="#ffffff55"/>'+[0,1,2,3].map(i=>`<rect x="4" y="${24+i*6}" width="12" height="2" fill="#ffffff88"/>`).join('')+'<rect x="26" y="7" width="30" height="5" fill="#262420"/>'+[0,1,2,3,4].map(i=>`<rect x="26" y="${17+i*7}" width="${36-i%2*8}" height="2" fill="#ccc"/>`).join(''),
+ mini:'<rect x="8" y="7" width="26" height="4" fill="#262420"/><rect x="8" y="14" width="40" height="1.6" fill="#ccc"/>'+[0,1,2,3].map(i=>`<rect x="8" y="${21+i*8}" width="10" height="2" fill="var(--acc)"/><rect x="22" y="${21+i*8}" width="40" height="2" fill="#ccc"/><rect x="22" y="${24+i*8}" width="30" height="1.6" fill="#ddd"/>`).join('')})[k];
+function inp(k,lab,ph){return `<label class="f">${lab}<input data-k="${k}" value="${esc(D[k])}" placeholder="${ph||''}"></label>`}
+function editor(){const o=$$('details').map(d=>d.open);
+ $('#eb').innerHTML=`<details open><summary>Modèle et couleur</summary><div class="tpl">${TPL.map(([k,n])=>`<button data-tpl="${k}" class="${D.tpl===k?'on':''}"><svg viewBox="0 0 70 56" style="--acc:${D.acc}"><rect width="70" height="56" fill="#fff"/>${tplSvg(k)}</svg>${n}</button>`).join('')}</div>
+ <div class="sw">${COLS.map(c=>`<button data-col="${c}" class="${D.acc===c?'on':''}" style="background:${c}" aria-label="Couleur ${c}"></button>`).join('')}</div></details>
+ <details open><summary>Identité</summary><div class="g2">${inp('prenom','Prénom')}${inp('nom','Nom')}</div>${inp('role','Titre du poste visé')}<div class="g2">${inp('mail','E-mail')}${inp('tel','Téléphone')}${inp('ville','Ville')}${inp('lien','Site ou profil')}</div></details>
+ <details><summary>Profil <small>${(D.profil||'').length} car.</small></summary><label class="f">Votre accroche, en 2 à 4 phrases<textarea data-k="profil">${esc(D.profil)}</textarea></label></details>
+ <details><summary>Expérience <small>${D.exp.length}</small></summary>${D.exp.map((e,i)=>`<div class="it"><button class="x" data-del="exp:${i}" aria-label="Supprimer">×</button><div class="g2"><label class="f">Poste<input data-a="exp:${i}:p" value="${esc(e.p)}"></label><label class="f">Entreprise<input data-a="exp:${i}:c" value="${esc(e.c)}"></label><label class="f">Ville<input data-a="exp:${i}:l" value="${esc(e.l)}"></label><label class="f">Dates<input data-a="exp:${i}:d" value="${esc(e.d)}"></label></div><label class="f">Réalisations, une par ligne<textarea data-a="exp:${i}:t">${esc(e.t)}</textarea></label></div>`).join('')}<button class="add" data-new="exp">+ Ajouter une expérience</button></details>
+ <details><summary>Formation <small>${D.form.length}</small></summary>${D.form.map((e,i)=>`<div class="it"><button class="x" data-del="form:${i}">×</button><label class="f">Diplôme<input data-a="form:${i}:p" value="${esc(e.p)}"></label><div class="g2"><label class="f">Établissement<input data-a="form:${i}:c" value="${esc(e.c)}"></label><label class="f">Dates<input data-a="form:${i}:d" value="${esc(e.d)}"></label></div></div>`).join('')}<button class="add" data-new="form">+ Ajouter une formation</button></details>
+ <details><summary>Compétences <small>${D.sk.length}</small></summary>${D.sk.map((s,i)=>`<div class="sk"><input type="text" data-a="sk:${i}:0" value="${esc(s[0])}"><input type="range" min="10" max="100" step="5" data-a="sk:${i}:1" value="${s[1]}"><button data-del="sk:${i}">×</button></div>`).join('')}<button class="add" data-new="sk">+ Ajouter une compétence</button></details>
+ <details><summary>Langues et centres d'intérêt</summary>${D.lang.map((s,i)=>`<div class="sk" style="grid-template-columns:1fr 1.3fr 24px"><input type="text" data-a="lang:${i}:0" value="${esc(s[0])}"><input type="text" data-a="lang:${i}:1" value="${esc(s[1])}"><button data-del="lang:${i}">×</button></div>`).join('')}<button class="add" data-new="lang">+ Ajouter une langue</button><label class="f">Centres d'intérêt<input data-k="int" value="${esc(D.int)}"></label></details>
+ <div class="ats" id="ats"></div>`;
+ $$('details').forEach((d,i)=>{if(o[i]!==undefined)d.open=o[i]});ats()}
+function ats(){const words=JSON.stringify(D).split(/\s+/).length,t=D.exp.map(e=>e.t).join('\n'),nums=(t.match(/\d+\s?%|\d{2,}/g)||[]).length,verbs=(t.match(/^(Conçu|Réduit|Encadré|Développé|Augmenté|Créé|Géré|Mis|Lancé|Piloté|Optimisé)/gm)||[]).length;
+ const C=[[!!(D.mail&&D.tel),'Coordonnées complètes'],[(D.profil||'').length>=120&&(D.profil||'').length<=450,'Accroche de 120 à 450 caractères'],[D.exp.length>=2,'Au moins deux expériences'],[nums>=2,'Résultats chiffrés ('+nums+')'],[verbs>=3,'Réalisations introduites par un verbe d\'action'],[D.sk.length>=4,'Quatre compétences ou plus'],[words<650,'Tient sur une page']];
+ const s=Math.round(C.filter(c=>c[0]).length/C.length*100);
+ $('#ats').innerHTML=`<div class="t"><span class="n">${s}</span><div><b>Score de lisibilité</b><br><small style="color:var(--mute)">par les logiciels de tri des candidatures (ATS)</small></div></div><ul>${C.map(c=>`<li class="${c[0]?'ok':'ko'}">${c[1]}</li>`).join('')}</ul>`}
+const bul=t=>(t||'').split('\n').filter(x=>x.trim()).map(x=>`<li>${esc(x)}</li>`).join('');
+function page(flash){const p=$('#page');p.style.setProperty('--a',D.acc);const nm=`${esc(D.prenom)} ${esc(D.nom)}`,ini=(D.prenom||' ')[0]+(D.nom||' ')[0];
+ const EXP=D.exp.map(e=>`<div class="ex"><div class="h"><b>${esc(e.p)}</b><span class="d">${esc(e.d)}</span></div><div class="c">${esc(e.c)}${e.l?' · '+esc(e.l):''}</div><ul>${bul(e.t)}</ul></div>`).join('');
+ const FORM=D.form.map(e=>`<div class="ex"><div class="h"><b>${esc(e.p)}</b><span class="d">${esc(e.d)}</span></div><div class="c">${esc(e.c)}</div></div>`).join('');
+ const SK=D.sk.map(s=>`<div>${esc(s[0])}</div><div class="lv"><u style="width:${s[1]}%"></u></div>`).join('');
+ const LG=D.lang.map(l=>`<p><b>${esc(l[0])}</b> — ${esc(l[1])}</p>`).join('');
+ if(D.tpl==='edito')p.className='page t-edito',p.innerHTML=`<div class="hd"><div><h1>${esc(D.prenom)} <em>${esc(D.nom)}</em></h1><div class="role">${esc(D.role)}</div></div><div class="ct">${[D.mail,D.tel,D.ville,D.lien].filter(Boolean).map(esc).join('<br>')}</div></div>
+  <div class="grid"><div><p style="font-size:13.5px;margin-bottom:22px">${esc(D.profil)}</p><h2>Expérience</h2>${EXP}<h2>Formation</h2>${FORM}</div><div class="side"><h2>Compétences</h2>${SK}<h2 style="margin-top:18px">Langues</h2>${LG}<h2 style="margin-top:18px">Intérêts</h2><p>${esc(D.int)}</p></div></div>`;
+ else if(D.tpl==='band')p.className='page t-band',p.innerHTML=`<div class="bar"><div class="ph">${esc(ini)}</div><h2>Contact</h2><p>${[D.mail,D.tel,D.ville,D.lien].filter(Boolean).map(esc).join('<br>')}</p><h2>Compétences</h2>${SK}<h2>Langues</h2>${LG}<h2>Intérêts</h2><p>${esc(D.int)}</p></div>
+  <div class="main"><h1>${nm}</h1><div class="role">${esc(D.role)}</div><p>${esc(D.profil)}</p><h2>Expérience</h2>${EXP}<h2>Formation</h2>${FORM}</div>`;
+ else p.className='page t-mini',p.innerHTML=`<h1>${nm}</h1><div class="role">${esc(D.role)}</div><div class="ct">${[D.mail,D.tel,D.ville,D.lien].filter(Boolean).map(x=>`<span>${esc(x)}</span>`).join('')}</div>
+  <div class="sec"><h2>Profil</h2><p>${esc(D.profil)}</p></div><div class="sec"><h2>Expérience</h2><div>${EXP}</div></div><div class="sec"><h2>Formation</h2><div>${FORM}</div></div>
+  <div class="sec"><h2>Compétences</h2><div class="chips">${D.sk.map(s=>`<span>${esc(s[0])}</span>`).join('')}</div></div><div class="sec"><h2>Langues</h2><div>${LG}</div></div><div class="sec" style="border:0"><h2>Intérêts</h2><p>${esc(D.int)}</p></div>`;
+ fit()}
+function fit(){const pv=$('#pv'),w=pv.clientWidth-(innerWidth>1000?60:16),k=Math.min(1,w/794);$('#zm').style.transform=`scale(${k})`;$('#zm').style.height=$('#page').offsetHeight*k+'px'}
+addEventListener('resize',fit);
+$('#eb').addEventListener('input',e=>{const t=e.target;if(t.dataset.k){D[t.dataset.k]=t.value}else if(t.dataset.a){const [s,i,f]=t.dataset.a.split(':');D[s][+i][isNaN(f)?f:+f]=t.type==='range'?+t.value:t.value}else return;save();page();ats()});
+$('#eb').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;
+ if(b.dataset.tpl){D.tpl=b.dataset.tpl;$$('.tpl button').forEach(x=>x.classList.toggle('on',x===b))}
+ else if(b.dataset.col){D.acc=b.dataset.col;editor()}
+ else if(b.dataset.del){const [s,i]=b.dataset.del.split(':');D[s].splice(+i,1);editor()}
+ else if(b.dataset.new){const k=b.dataset.new;D[k].push({exp:{p:'Nouveau poste',c:'Entreprise',l:'',d:'2024',t:''},form:{p:'Diplôme',c:'Établissement',d:'2024'},sk:['Nouvelle compétence',60],lang:['Langue','niveau']}[k]);editor()}
+ else return;save();page()});
+$('#rst').onclick=()=>{D=JSON.parse(JSON.stringify(EX));save();editor();page()};
+$('#clr').onclick=()=>{D={tpl:D.tpl,acc:D.acc,prenom:'',nom:'',role:'',mail:'',tel:'',ville:'',lien:'',profil:'',exp:[],form:[],sk:[],lang:[],int:''};save();editor();page()};
+$$('.mtab button').forEach(b=>b.onclick=()=>{$$('.mtab button').forEach(x=>x.classList.toggle('on',x===b));$('#app').classList.toggle('m-pv',b.dataset.m==='pv');fit()});
+window.__tpl=k=>{D.tpl=k;save();editor();page()};window.__col=c=>{D.acc=c;save();editor();page()};
+editor();page();
+</script>
+</body>
+</html>
